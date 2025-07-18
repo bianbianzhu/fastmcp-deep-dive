@@ -110,6 +110,7 @@ app.post("/mcp/high-level", async (req, res) => {
           server,
           transport,
         });
+        console.log(`New session initialized: ${_sessionId}`);
       },
     });
 

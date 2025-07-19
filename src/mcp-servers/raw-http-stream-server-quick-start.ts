@@ -239,7 +239,7 @@ function createLowLevelServer() {
   // ======== END of tool definitions===========
 
   // general tool execution handler
-  function handleToolExecution({
+  async function handleToolExecution({
     tool, // for schema validation
     args, // the arguments for the execute function
     execute, // the execute function
@@ -247,7 +247,7 @@ function createLowLevelServer() {
     tool: Tool;
     args: unknown;
     execute: (args: unknown) => CallToolResult;
-  }): CallToolResult {
+  }): Promise<CallToolResult> {
     const ajv = new Ajv();
     // ajv: the json schema validator
     const validate = ajv.compile(tool.inputSchema);
@@ -292,7 +292,7 @@ function createLowLevelServer() {
 
   lowLevelServer.setRequestHandler(
     CallToolRequestSchema,
-    async (req, _extra) => {
+    async (req, _extra): Promise<CallToolResult> => {
       const { name: toolName, arguments: args } = req.params;
 
       const tool = toolList.find((tool) => tool.name === toolName);
@@ -304,7 +304,7 @@ function createLowLevelServer() {
         };
       }
 
-      const result = handleToolExecution({
+      const result = await handleToolExecution({
         tool,
         args,
         execute: toolMap.get(toolName)!,

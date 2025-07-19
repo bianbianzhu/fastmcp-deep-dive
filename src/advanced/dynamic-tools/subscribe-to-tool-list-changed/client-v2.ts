@@ -10,6 +10,8 @@ import {
   ToolListChangedNotificationSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 
+// TODO：埋坑，找到网上其他实现，对比一下
+
 // Advanced example with event emitter pattern
 import { EventEmitter } from "events";
 

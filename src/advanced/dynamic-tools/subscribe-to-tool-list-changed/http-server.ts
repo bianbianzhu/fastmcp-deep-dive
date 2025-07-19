@@ -38,7 +38,8 @@ function createServer() {
           listChanged: true,
         },
       },
-      debouncedNotificationMethods: ["notifications/tools/list_changed"],
+      // This would stop the tool list changed event from being sent to the client - why ???? TODO: find out why
+      // debouncedNotificationMethods: ["notifications/tools/list_changed"],
     }
   );
 
@@ -111,6 +112,8 @@ app.post("/mcp", async (req, res) => {
       });
       return;
     }
+
+    console.log("existing session: ", session.transport.sessionId);
 
     server = session.server;
     transport = session.transport;

@@ -21,10 +21,13 @@ const sessions = new Map<
   }
 >();
 
-let dynamicTool: {
-  tool: RegisteredTool;
+const dynamicTool: {
+  tool: RegisteredTool | null;
   isEnabled: boolean;
-} | null = null;
+} = {
+  tool: null,
+  isEnabled: false,
+};
 
 function createServer() {
   const server = new McpServer(
@@ -51,13 +54,7 @@ function createServer() {
       inputSchema: { a: z.number(), b: z.number() },
     },
     async ({ a, b }) => ({
-      content: [
-        { type: "text", text: String(a + b) },
-        {
-          type: "text",
-          text: "this is high level server addition tool",
-        },
-      ],
+      content: [{ type: "text", text: String(a + b) }],
       isError: false,
     })
   );
@@ -70,23 +67,15 @@ function createServer() {
       inputSchema: { a: z.number(), b: z.number() },
     },
     async ({ a, b }) => ({
-      content: [
-        { type: "text", text: String(a - b) },
-        {
-          type: "text",
-          text: "this is high level server subtraction tool",
-        },
-      ],
+      content: [{ type: "text", text: String(a - b) }],
       isError: false,
     })
   );
 
   subtractTool.disable(); // disable the tool in the initial state
 
-  dynamicTool = {
-    tool: subtractTool,
-    isEnabled: false,
-  };
+  dynamicTool.tool = subtractTool;
+  dynamicTool.isEnabled = false;
 
   return server;
 }
@@ -147,7 +136,7 @@ app.post("/mcp", async (req, res) => {
   await transport.handleRequest(req, res, req.body);
 });
 
-app.post("/toggle-subtract-tool", async (req, res) => {
+app.post("/toggle-dynamic-tool", async (req, res) => {
   const sid = req.headers["mcp-session-id"];
 
   if (!sid || typeof sid !== "string") {
@@ -175,7 +164,7 @@ app.post("/toggle-subtract-tool", async (req, res) => {
     return;
   }
 
-  if (!dynamicTool) {
+  if (!dynamicTool.tool) {
     res.status(404).json({
       jsonrpc: "2.0",
       id: req.body.id ?? null,
@@ -189,6 +178,34 @@ app.post("/toggle-subtract-tool", async (req, res) => {
 
   dynamicTool.isEnabled = !dynamicTool.isEnabled;
   dynamicTool.tool[dynamicTool.isEnabled ? "enable" : "disable"]();
+
+  // the reason that the tool list changed event is not sent to the client is because:
+
+  // so basically, the notification can not be sent by itself, it needs to be sent with response
+
+  // Check if this message should be sent on the standalone SSE stream (no request ID)
+  // Ignore notifications from tools (which have relatedRequestId set)
+  // Those will be sent via dedicated response SSE streams
+  //   if (requestId === undefined) {
+  //     // For standalone SSE streams, we can only send requests and notifications
+  //     if (isJSONRPCResponse(message) || isJSONRPCError(message)) {
+  //         throw new Error("Cannot send a response on a standalone SSE stream unless resuming a previous client request");
+  //     }
+  //     const standaloneSse = this._streamMapping.get(this._standaloneSseStreamId);
+  //     if (standaloneSse === undefined) {
+  //         // The spec says the server MAY send messages on the stream, so it's ok to discard if no stream
+  //         return;
+  //     }
+  //     // Generate and store event ID if event store is provided
+  //     let eventId;
+  //     if (this._eventStore) {
+  //         // Stores the event and gets the generated event ID
+  //         eventId = await this._eventStore.storeEvent(this._standaloneSseStreamId, message);
+  //     }
+  //     // Send the message to the standalone SSE stream
+  //     this.writeSSEEvent(standaloneSse, message, eventId);
+  //     return;
+  // }
 
   console.log(`Dynamic tool ${dynamicTool.isEnabled ? "enabled" : "disabled"}`);
 

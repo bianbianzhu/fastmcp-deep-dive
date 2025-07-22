@@ -12,6 +12,11 @@ child.on("spawn", () => {
 // 2. 忠实地将主进程的 stdin 转发给子进程
 process.stdin.on("data", (buf) => {
   const input = buf.toString().trim();
+  // 如果是zsh，避免使用process.stdout.write 或者 console.log 或者 console.error 在这里打印父进程的输入，这会导致因为安全机制被挂起
+
+  // 如果是bash，可以在这里打印父进程的输入
+  console.log("🌟 input from main process:", input);
+  console.log("🔥 sending input to child process");
   child.stdin.write(`${input}\n`);
 });
 

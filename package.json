@@ -24,7 +24,7 @@
     "mcp:fc-host-v2": "tsx --watch src/mcp-host/function-calling-host-v2.ts",
     "advanced:dynamic-tools:client": "tsx --watch src/advanced/dynamic-tools/subscribe-to-tool-list-changed/client.ts",
     "advanced:dynamic-tools:server": "tsx --watch src/advanced/dynamic-tools/subscribe-to-tool-list-changed/http-server.ts",
-    "stdio:stdin-stdout-server-no-inherit": "tsx --watch src/stdio/stdin-stdout-server-no-inherit.ts",
+    "stdio:stdin-stdout-server-no-inherit": "tsx src/stdio/stdin-stdout-server-no-inherit.ts",
     "nuke": "rm -rf node_modules dist"
   },
   "keywords": [],

@@ -24,10 +24,12 @@ child.stderr.on("data", (buf) => {
   process.stderr.write(`❌ std error from child: ${input}\n`); // 当前进程打印子进程的错误输出 - 不然你看不见子进程的错误输出
 });
 
+// 在子进程退出时触发
 child.on("exit", (code, signal) => {
   process.stdout.write(`child exited with code ${code} and signal ${signal}\n`);
 });
 
+// 在子进程退出之后，子进程的所有stdio stream关闭时触发
 child.on("close", (code, signal) => {
   process.stdout.write(`child closed with code ${code} and signal ${signal}\n`);
 });

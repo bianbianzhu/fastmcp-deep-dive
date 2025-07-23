@@ -1,6 +1,6 @@
 import { ChildProcess, spawn } from "node:child_process";
 import { once } from "node:events";
-import z from "zod";
+import { z } from "zod";
 
 const jsonrpcSchemaBase = z.object({
   jsonrpc: z.literal("2.0"),
@@ -309,11 +309,9 @@ const transport = new StdioClientTransport(
 await transport.start();
 
 // 3. 发送请求 - 必须有换行符
-transport.childProcess?.stdin?.write(JSON.stringify(initializeRequest) + "\n");
-transport.childProcess?.stdin?.write(
-  JSON.stringify(initializedNotification) + "\n"
-);
-transport.childProcess?.stdin?.write(JSON.stringify(toolsListRequest) + "\n");
-transport.childProcess?.stdin?.write(JSON.stringify(toolsCallRequest) + "\n");
+transport.send(initializeRequest);
+transport.send(initializedNotification);
+transport.send(toolsListRequest);
+transport.send(toolsCallRequest);
 
 await transport.close();

@@ -1,5 +1,5 @@
 import { ChildProcess, spawn } from "node:child_process";
-import z from "zod";
+import { z } from "zod";
 
 const jsonrpcSchemaBase = z.object({
   jsonrpc: z.literal("2.0"),

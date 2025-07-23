@@ -1,5 +1,8 @@
+import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
+import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 import { ChildProcess, spawn } from "node:child_process";
-import z from "zod";
+import { once } from "node:events";
+import { z } from "zod";
 
 const jsonrpcSchemaBase = z.object({
   jsonrpc: z.literal("2.0"),
@@ -135,7 +138,7 @@ const toolsListRequest: JsonRpcRequest = {
 };
 
 // 1.4 tools/call
-const toolsCallRequest: JsonRpcRequest<typeof toolsCallRequestParamsSchema> = {
+const _toolsCallRequest: JsonRpcRequest<typeof toolsCallRequestParamsSchema> = {
   jsonrpc: "2.0",
   method: "tools/call",
   id: 2,
@@ -236,6 +239,24 @@ class StdioClientTransport {
   get childProcess(): ChildProcess | undefined {
     return this.#_subProcess;
   }
+
+  async send(message: JSONRPCMessage): Promise<void> {
+    if (!this.#_subProcess) {
+      throw new Error("Sub process is not running");
+    }
+
+    if (this.#_subProcess.stdin === null) {
+      throw new Error("Sub process stdin is not available");
+    }
+
+    const json = JSON.stringify(message) + "\n";
+
+    const canWrite = this.#_subProcess.stdin?.write(json);
+
+    if (!canWrite) {
+      await once(this.#_subProcess.stdin, "drain");
+    }
+  }
 }
 
 class ReadBuffer {
@@ -284,17 +305,102 @@ type ClientOptions = {
 };
 
 class Client {
-  #_transport?: StdioClientTransport;
+  #_transport?:
+    | StdioClientTransport
+    | StreamableHTTPClientTransport
+    | SSEClientTransport;
   #_clientInfo: ClientInfo;
 
-  constructor(clientInfo: ClientInfo, options?: ClientOptions) {
+  constructor(clientInfo: ClientInfo, _options?: ClientOptions) {
     this.#_clientInfo = clientInfo;
   }
 
-  async connect(transport: StdioClientTransport): Promise<void> {
+  async connect(
+    transport:
+      | StdioClientTransport
+      | StreamableHTTPClientTransport
+      | SSEClientTransport
+  ): Promise<void> {
+    if (
+      transport instanceof StreamableHTTPClientTransport ||
+      transport instanceof SSEClientTransport
+    ) {
+      throw new Error(
+        "Sorry, we don't support this transport yet. Please use StdioClientTransport instead."
+      );
+    }
+
     this.#_transport = transport;
 
+    this.#_transport.onMessage = (message) => {
+      console.log(`❇️ message: ${JSON.stringify(message, null, 2)}`);
+    };
+
     await this.#_transport.start();
+
+    await this.#_transport.send(initializeRequest);
+
+    await this.#_transport.send(initializedNotification);
+  }
+
+  get transport():
+    | StdioClientTransport
+    | StreamableHTTPClientTransport
+    | SSEClientTransport
+    | undefined {
+    return this.#_transport;
+  }
+
+  async listTools() {
+    if (!this.#_transport) {
+      throw new Error("Transport is not connected");
+    }
+
+    if (
+      this.#_transport instanceof StreamableHTTPClientTransport ||
+      this.#_transport instanceof SSEClientTransport
+    ) {
+      throw new Error(
+        "Sorry, we don't support this transport yet. Please use StdioClientTransport instead."
+      );
+    }
+
+    await this.#_transport.send(toolsListRequest);
+  }
+
+  async callTool({
+    toolName,
+    args,
+  }: {
+    toolName: string;
+    args: Record<string, unknown>;
+  }) {
+    if (!this.#_transport) {
+      throw new Error("Transport is not connected");
+    }
+
+    if (
+      this.#_transport instanceof StreamableHTTPClientTransport ||
+      this.#_transport instanceof SSEClientTransport
+    ) {
+      throw new Error(
+        "Sorry, we don't support this transport yet. Please use StdioClientTransport instead."
+      );
+    }
+
+    const toolsCallRequest: JsonRpcRequest<
+      typeof toolsCallRequestParamsSchema
+    > = {
+      jsonrpc: "2.0",
+      method: "tools/call",
+      id: 2,
+      params: {
+        name: toolName,
+        arguments: args,
+      },
+    };
+
+    await this.#_transport.send(toolsCallRequest);
   }
 }
 
@@ -303,14 +409,13 @@ const transport = new StdioClientTransport({
   args: ["src/mcp-servers/raw-stdio-server-quick-start.ts"],
 });
 
-await transport.start();
+const client = new Client({
+  name: "mcp-client",
+  version: "1.0.0",
+});
 
-// 3. 发送请求 - 必须有换行符
-transport.childProcess?.stdin?.write(JSON.stringify(initializeRequest) + "\n");
-transport.childProcess?.stdin?.write(
-  JSON.stringify(initializedNotification) + "\n"
-);
-transport.childProcess?.stdin?.write(JSON.stringify(toolsListRequest) + "\n");
-transport.childProcess?.stdin?.write(JSON.stringify(toolsCallRequest) + "\n");
+await client.connect(transport);
 
-await transport.close();
+await client.listTools();
+
+await client.callTool({ toolName: "add", args: { a: 1, b: 2 } });

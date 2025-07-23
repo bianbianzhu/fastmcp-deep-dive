@@ -1,6 +1,6 @@
 import "dotenv/config";
 import readline from "readline";
-import z from "zod";
+import { z } from "zod";
 
 const jsonrpcSchemaBase = z.object({
   jsonrpc: z.literal("2.0"),

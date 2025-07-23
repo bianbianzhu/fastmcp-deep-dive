@@ -311,6 +311,11 @@ class Client {
     | SSEClientTransport;
   #_clientInfo: ClientInfo;
 
+  #_pendingRequests = new Map<
+    string | number | null,
+    (response: JSONRPCMessage) => void
+  >();
+
   constructor(clientInfo: ClientInfo, _options?: ClientOptions) {
     this.#_clientInfo = clientInfo;
   }
@@ -333,7 +338,16 @@ class Client {
     this.#_transport = transport;
 
     this.#_transport.onMessage = (message) => {
-      console.log(`❇️ message: ${JSON.stringify(message, null, 2)}`);
+      if (!("id" in message) || message.id === undefined) {
+        return;
+      }
+
+      // This is just a mock implementation, MUST process the messages according to their types.
+      const resolver = this.#_pendingRequests.get(message.id);
+      if (resolver) {
+        resolver(message);
+        this.#_pendingRequests.delete(message.id);
+      }
     };
 
     await this.#_transport.start();
@@ -365,7 +379,13 @@ class Client {
       );
     }
 
+    const responsePromise = new Promise<JSONRPCMessage>((resolve) => {
+      this.#_pendingRequests.set(toolsListRequest.id ?? 1, resolve);
+    });
+
     await this.#_transport.send(toolsListRequest);
+
+    return responsePromise;
   }
 
   async callTool({
@@ -400,7 +420,13 @@ class Client {
       },
     };
 
+    const responsePromise = new Promise<JSONRPCMessage>((resolve) => {
+      this.#_pendingRequests.set(toolsCallRequest.id ?? 2, resolve);
+    });
+
     await this.#_transport.send(toolsCallRequest);
+
+    return responsePromise;
   }
 }
 
@@ -416,6 +442,10 @@ const client = new Client({
 
 await client.connect(transport);
 
-await client.listTools();
+const tools = await client.listTools();
 
-await client.callTool({ toolName: "add", args: { a: 1, b: 2 } });
+console.log(JSON.stringify(tools, null, 2));
+
+const result = await client.callTool({ toolName: "add", args: { a: 1, b: 2 } });
+
+console.log(JSON.stringify(result, null, 2));

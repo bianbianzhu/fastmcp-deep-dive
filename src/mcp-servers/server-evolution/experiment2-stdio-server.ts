@@ -50,4 +50,8 @@ class ReadBuffer {
 
     return parsed.data;
   }
+
+  clear(): void {
+    this.#buffer = undefined;
+  }
 }

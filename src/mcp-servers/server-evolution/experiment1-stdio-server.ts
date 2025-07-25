@@ -25,7 +25,7 @@ process.stdin.on("data", (buf) => {
   // 这四条jsonrpc很可能会被拼接在一起，然后flush进server的stdin
   const input = buf.toString();
 
-  const initializeResponse: SuccessResponse = {
+  const response: SuccessResponse = {
     jsonrpc: "2.0",
     id: 0,
     result: {
@@ -33,5 +33,5 @@ process.stdin.on("data", (buf) => {
     },
   };
 
-  process.stdout.write(JSON.stringify(initializeResponse) + "\n");
+  process.stdout.write(JSON.stringify(response) + "\n");
 });

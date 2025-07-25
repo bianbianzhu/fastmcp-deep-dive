@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2024-01-01T00:00:00.000Z" agent="5.0" etag="xxx" version="22.1.0" type="device">
+  <diagram name="Page-1" id="page1">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1600" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Participants -->
+        <mxCell id="participant1" value="Main Process&lt;br/&gt;(experiment1-raw-stdio-client.ts)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="50" width="200" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="participant2" value="Child Process&lt;br/&gt;(experiment1-stdio-server.ts)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="50" width="200" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="participant3" value="Client stdin" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="50" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="participant4" value="Server stdout" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="720" y="50" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Lifelines -->
+        <mxCell id="lifeline1" value="" style="endArrow=none;dashed=1;html=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="110" as="sourcePoint" />
+            <mxPoint x="150" y="1500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="lifeline2" value="" style="endArrow=none;dashed=1;html=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="110" as="sourcePoint" />
+            <mxPoint x="400" y="1500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="lifeline3" value="" style="endArrow=none;dashed=1;html=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="610" y="110" as="sourcePoint" />
+            <mxPoint x="610" y="1500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="lifeline4" value="" style="endArrow=none;dashed=1;html=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="780" y="110" as="sourcePoint" />
+            <mxPoint x="780" y="1500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Step 1: Prepare JSON-RPC requests -->
+        <mxCell id="note1" value="1. Prepare JSON-RPC requests" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="130" width="200" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="self1" value="" style="endArrow=block;html=1;curved=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="190" as="sourcePoint" />
+            <mxPoint x="200" y="190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label1" value="Create initializeRequest (id: 0)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="self1">
+          <mxGeometry x="30" y="-10" width="180" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="self2" value="" style="endArrow=block;html=1;curved=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="220" as="sourcePoint" />
+            <mxPoint x="200" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label2" value="Create initializedNotification (no id)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="self2">
+          <mxGeometry x="30" y="-10" width="200" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="self3" value="" style="endArrow=block;html=1;curved=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="250" as="sourcePoint" />
+            <mxPoint x="200" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label3" value="Create toolsListRequest (id: 1)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="self3">
+          <mxGeometry x="30" y="-10" width="180" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="self4" value="" style="endArrow=block;html=1;curved=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="280" as="sourcePoint" />
+            <mxPoint x="200" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label4" value="Create toolsCallRequest (id: 2)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="self4">
+          <mxGeometry x="30" y="-10" width="180" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Step 2: Spawn child process -->
+        <mxCell id="note2" value="2. Spawn child process" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="320" width="150" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="spawn1" value="" style="endArrow=block;html=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="380" as="sourcePoint" />
+            <mxPoint x="400" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label5" value="spawn('./node_modules/.bin/tsx', [server.ts])" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="spawn1">
+          <mxGeometry x="50" y="-10" width="250" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="spawn2" value="" style="endArrow=block;html=1;strokeWidth=2;dashed=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="410" as="sourcePoint" />
+            <mxPoint x="150" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label6" value="spawn event: ✅ child process spawned" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="spawn2">
+          <mxGeometry x="50" y="-10" width="230" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Step 3: Setup event listeners -->
+        <mxCell id="note3" value="3. Setup event listeners" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="450" width="150" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="setup1" value="" style="endArrow=block;html=1;curved=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="510" as="sourcePoint" />
+            <mxPoint x="200" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label7" value="Setup stdout.on('data') listener" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="setup1">
+          <mxGeometry x="30" y="-10" width="190" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="setup2" value="" style="endArrow=block;html=1;curved=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="540" as="sourcePoint" />
+            <mxPoint x="200" y="540" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label8" value="Setup stderr.on('data') listener" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="setup2">
+          <mxGeometry x="30" y="-10" width="190" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="setup3" value="" style="endArrow=block;html=1;curved=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="570" as="sourcePoint" />
+            <mxPoint x="200" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label9" value="Setup exit/close listeners" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="setup3">
+          <mxGeometry x="30" y="-10" width="160" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="setup4" value="" style="endArrow=block;html=1;curved=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="600" as="sourcePoint" />
+            <mxPoint x="200" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label10" value="Setup SIGINT handler" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="setup4">
+          <mxGeometry x="30" y="-10" width="140" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Step 4: Send JSON-RPC requests -->
+        <mxCell id="note4" value="4. Send JSON-RPC requests" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="640" width="150" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="send1" value="" style="endArrow=block;html=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="700" as="sourcePoint" />
+            <mxPoint x="610" y="700" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label11" value="write(initializeRequest + '\\n')" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="send1">
+          <mxGeometry x="150" y="-10" width="170" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="send2" value="" style="endArrow=block;html=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="730" as="sourcePoint" />
+            <mxPoint x="610" y="730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label12" value="write(initializedNotification + '\\n')" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="send2">
+          <mxGeometry x="150" y="-10" width="190" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="send3" value="" style="endArrow=block;html=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="760" as="sourcePoint" />
+            <mxPoint x="610" y="760" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label13" value="write(toolsListRequest + '\\n')" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="send3">
+          <mxGeometry x="150" y="-10" width="170" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="send4" value="" style="endArrow=block;html=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="790" as="sourcePoint" />
+            <mxPoint x="610" y="790" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label14" value="write(toolsCallRequest + '\\n')" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="send4">
+          <mxGeometry x="150" y="-10" width="170" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="send5" value="" style="endArrow=block;html=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="820" as="sourcePoint" />
+            <mxPoint x="610" y="820" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label15" value="end()" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="send5">
+          <mxGeometry x="300" y="-10" width="40" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Data flows through stdin pipe -->
+        <mxCell id="note5" value="Data flows through stdin pipe" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="860" width="180" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="pipe1" value="" style="endArrow=block;html=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="610" y="920" as="sourcePoint" />
+            <mxPoint x="400" y="920" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label16" value="Concatenated JSON-RPC data" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="pipe1">
+          <mxGeometry x="50" y="-10" width="170" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Step 5: Server processes data -->
+        <mxCell id="note6" value="5. Server processes data" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="960" width="150" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="process1" value="" style="endArrow=block;html=1;curved=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="1020" as="sourcePoint" />
+            <mxPoint x="450" y="1020" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label17" value="stdin.on('data') triggered" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="process1">
+          <mxGeometry x="30" y="-10" width="150" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="process2" value="" style="endArrow=block;html=1;curved=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="1050" as="sourcePoint" />
+            <mxPoint x="450" y="1050" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label18" value="buf.toString() - gets all 4 requests concatenated" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="process2">
+          <mxGeometry x="30" y="-10" width="280" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="process3" value="" style="endArrow=block;html=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="1080" as="sourcePoint" />
+            <mxPoint x="780" y="1080" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label19" value="write('❇️ Data received from client\\n')" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="process3">
+          <mxGeometry x="100" y="-10" width="230" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Step 6: Server sends response -->
+        <mxCell id="note7" value="6. Server sends response" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="1120" width="150" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="response1" value="" style="endArrow=block;html=1;curved=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="1180" as="sourcePoint" />
+            <mxPoint x="450" y="1180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label20" value="Create initializeResponse (id: 0)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="response1">
+          <mxGeometry x="30" y="-10" width="190" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="response2" value="" style="endArrow=block;html=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="1210" as="sourcePoint" />
+            <mxPoint x="780" y="1210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label21" value="write(JSON.stringify(response) + '\\n')" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="response2">
+          <mxGeometry x="100" y="-10" width="220" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Response flows through stdout pipe -->
+        <mxCell id="note8" value="Response flows through stdout pipe" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="1250" width="200" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="pipe2" value="" style="endArrow=block;html=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="780" y="1310" as="sourcePoint" />
+            <mxPoint x="150" y="1310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label22" value="JSON response data" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="pipe2">
+          <mxGeometry x="250" y="-10" width="130" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Step 7: Client receives response -->
+        <mxCell id="note9" value="7. Client receives response" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="1350" width="150" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="receive1" value="" style="endArrow=block;html=1;curved=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="1410" as="sourcePoint" />
+            <mxPoint x="200" y="1410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label23" value="stdout.on('data') triggered" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="receive1">
+          <mxGeometry x="30" y="-10" width="160" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="receive2" value="" style="endArrow=block;html=1;curved=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="1440" as="sourcePoint" />
+            <mxPoint x="200" y="1440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label24" value="💡 child process has stdout" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="receive2">
+          <mxGeometry x="30" y="-10" width="170" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="receive3" value="" style="endArrow=block;html=1;curved=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="1470" as="sourcePoint" />
+            <mxPoint x="200" y="1470" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label25" value="🔥 sending output to main process" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="receive3">
+          <mxGeometry x="30" y="-10" width="200" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="receive4" value="" style="endArrow=block;html=1;curved=1;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="1500" as="sourcePoint" />
+            <mxPoint x="200" y="1500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label26" value="process.stdout.write(output)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="receive4">
+          <mxGeometry x="30" y="-10" width="170" height="20" as="geometry" />
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile> 

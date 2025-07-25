@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2024-01-01T00:00:00.000Z" agent="5.0" etag="abc123" version="24.0.0" type="device">
+  <diagram name="Chat App Flow" id="chat-app-flow">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Nodes -->
+        <mxCell id="nodeA" value="App Start" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#01579b;" vertex="1" parent="1">
+          <mxGeometry x="500" y="40" width="120" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeB" value="Initialize readline interface" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="470" y="120" width="180" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeC" value="Initialize Anthropic client" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="200" width="160" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeD" value="Initialize empty message history" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="280" width="200" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeE" value="Set prompt to 'user: '" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="360" width="140" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeF" value="Display initial prompt" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="440" width="140" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeG" value="Wait for user input" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e8;strokeColor=#2e7d32;" vertex="1" parent="1">
+          <mxGeometry x="490" y="520" width="140" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeH" value="User enters input" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="600" width="160" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeI" value="Input == 'stop'?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="700" width="160" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeJ" value="Close readline interface" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="720" y="710" width="160" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeK" value="Print 'bye'" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="750" y="790" width="100" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeL" value="Exit application" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffebee;strokeColor=#c62828;" vertex="1" parent="1">
+          <mxGeometry x="740" y="870" width="120" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeM" value="Create user message object" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="710" width="180" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeN" value="Add user message to history" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="790" width="200" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeO" value="Call createMessage function" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="870" width="180" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeP" value="Send request to Anthropic API" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#7b1fa2;" vertex="1" parent="1">
+          <mxGeometry x="190" y="950" width="200" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeQ" value="Receive AI response" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="210" y="1030" width="160" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeR" value="Extract text content from response" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="170" y="1110" width="240" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeS" value="Create assistant message object" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="180" y="1190" width="220" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeT" value="Add assistant message to history" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="170" y="1270" width="240" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeU" value="Print assistant response to console" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="1350" width="260" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nodeV" value="Display prompt again" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="1430" width="180" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Edges -->
+        <mxCell id="edgeAB" edge="1" parent="1" source="nodeA" target="nodeB">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="560" y="80" as="sourcePoint" />
+            <mxPoint x="560" y="120" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="edgeBC" edge="1" parent="1" source="nodeB" target="nodeC">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edgeCD" edge="1" parent="1" source="nodeC" target="nodeD">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edgeDE" edge="1" parent="1" source="nodeD" target="nodeE">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edgeEF" edge="1" parent="1" source="nodeE" target="nodeF">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edgeFG" edge="1" parent="1" source="nodeF" target="nodeG">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edgeGH" edge="1" parent="1" source="nodeG" target="nodeH">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edgeHI" edge="1" parent="1" source="nodeH" target="nodeI">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edgeIJ" edge="1" parent="1" source="nodeI" target="nodeJ">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="labelIJ" value="Yes" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="edgeIJ">
+          <mxGeometry x="620" y="720" width="40" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edgeJK" edge="1" parent="1" source="nodeJ" target="nodeK">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edgeKL" edge="1" parent="1" source="nodeK" target="nodeL">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edgeIM" edge="1" parent="1" source="nodeI" target="nodeM">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="labelIM" value="No" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="edgeIM">
+          <mxGeometry x="390" y="720" width="30" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edgeMN" edge="1" parent="1" source="nodeM" target="nodeN">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edgeNO" edge="1" parent="1" source="nodeN" target="nodeO">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edgeOP" edge="1" parent="1" source="nodeO" target="nodeP">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edgePQ" edge="1" parent="1" source="nodeP" target="nodeQ">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edgeQR" edge="1" parent="1" source="nodeQ" target="nodeR">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edgeRS" edge="1" parent="1" source="nodeR" target="nodeS">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edgeST" edge="1" parent="1" source="nodeS" target="nodeT">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edgeTU" edge="1" parent="1" source="nodeT" target="nodeU">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edgeUV" edge="1" parent="1" source="nodeU" target="nodeV">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edgeVG" edge="1" parent="1" source="nodeV" target="nodeG">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="100" y="1450" />
+              <mxPoint x="100" y="540" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile> 

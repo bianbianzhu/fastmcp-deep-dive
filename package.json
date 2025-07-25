@@ -25,6 +25,7 @@
     "advanced:dynamic-tools:client": "tsx --watch src/advanced/dynamic-tools/subscribe-to-tool-list-changed/client.ts",
     "advanced:dynamic-tools:server": "tsx --watch src/advanced/dynamic-tools/subscribe-to-tool-list-changed/http-server.ts",
     "stdio:stdin-stdout-server-no-inherit": "tsx src/stdio/stdin-stdout-server-no-inherit.ts",
+    "experiment:stdio:client": "tsx src/mcp-client/client-evolution/experiment1-raw-stdio-client.ts",
     "nuke": "rm -rf node_modules dist"
   },
   "keywords": [],

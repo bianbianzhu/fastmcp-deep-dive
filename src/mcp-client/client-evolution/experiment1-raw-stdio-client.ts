@@ -201,6 +201,7 @@ process.on("SIGINT", () => {
 });
 
 // 3. 发送请求 - 必须有换行符
+// stdin.write请求是异步的
 child.stdin.write(JSON.stringify(initializeRequest) + "\n");
 child.stdin.write(JSON.stringify(initializedNotification) + "\n");
 child.stdin.write(JSON.stringify(toolsListRequest) + "\n");

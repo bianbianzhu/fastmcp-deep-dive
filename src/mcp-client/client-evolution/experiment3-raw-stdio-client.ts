@@ -432,7 +432,7 @@ class Client {
 
 const transport = new StdioClientTransport({
   command: "./node_modules/.bin/tsx",
-  args: ["src/mcp-servers/server-evolution/experiment0-stdio-server.ts"],
+  args: ["src/mcp-servers/server-evolution/experiment3-stdio-server.ts"],
 });
 
 const client = new Client({

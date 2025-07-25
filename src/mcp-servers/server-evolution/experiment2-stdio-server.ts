@@ -22,24 +22,24 @@ process.stdin.on("data", (buf) => {
 });
 
 class ReadBuffer {
-  #buffer?: Buffer;
+  #_buffer?: Buffer;
 
   append(data: Buffer): void {
-    this.#buffer = this.#buffer ? Buffer.concat([this.#buffer, data]) : data;
+    this.#_buffer = this.#_buffer ? Buffer.concat([this.#_buffer, data]) : data;
   }
 
   readMessage(): JSONRPCMessage | null {
-    if (!this.#buffer) {
+    if (!this.#_buffer) {
       return null;
     }
 
-    const index = this.#buffer.indexOf("\n");
+    const index = this.#_buffer.indexOf("\n");
     if (index === -1) {
       return null;
     }
 
-    const line = this.#buffer.toString("utf-8", 0, index).replace(/\r$/, "");
-    this.#buffer = this.#buffer.subarray(index + 1);
+    const line = this.#_buffer.toString("utf-8", 0, index).replace(/\r$/, "");
+    this.#_buffer = this.#_buffer.subarray(index + 1);
 
     const message = JSON.parse(line);
 
@@ -52,6 +52,6 @@ class ReadBuffer {
   }
 
   clear(): void {
-    this.#buffer = undefined;
+    this.#_buffer = undefined;
   }
 }

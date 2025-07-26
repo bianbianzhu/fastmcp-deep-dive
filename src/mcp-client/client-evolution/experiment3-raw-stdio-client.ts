@@ -342,6 +342,11 @@ class Client {
         return;
       }
 
+      // simply display the server info
+      // if (message.id === 0) {
+      //   console.log(message);
+      // }
+
       // This is just a mock implementation, MUST process the messages according to their types.
       const resolver = this.#_pendingRequests.get(message.id);
       if (resolver) {
@@ -446,6 +451,9 @@ const tools = await client.listTools();
 
 console.log(JSON.stringify(tools, null, 2));
 
-const result = await client.callTool({ toolName: "add", args: { a: 1, b: 2 } });
+const result = await client.callTool({
+  toolName: "add",
+  args: { a: 123, b: 2 },
+});
 
 console.log(JSON.stringify(result, null, 2));

@@ -1,4 +1,5 @@
 import {
+  isJSONRPCNotification,
   JSONRPCMessage,
   JSONRPCMessageSchema,
   JSONRPCResponse,
@@ -106,9 +107,13 @@ const transport = new StdioServerTransport(onMessage);
 await transport.start();
 
 function onMessage(message: JSONRPCMessage): void {
-  if (!("id" in message)) {
+  //   if (!("id" in message)) {
+  //     return;
+  //   } // 如果id不存在，则认为这是一个notification，不需要处理
+
+  if (isJSONRPCNotification(message)) {
     return;
-  }
+  } // 使用isJSONRPCNotification来判断是否是notification更加elegant
 
   const response: JSONRPCResponse = {
     jsonrpc: "2.0",

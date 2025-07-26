@@ -1,0 +1,12 @@
+{
+  "tag": "f98201",
+  "environment": "dev",
+  "version": "3.2.1",
+  "env_vars": {
+    "DB_HOST": "localhost",
+    "DB_PORT": "3306",
+    "DB_USER": "root",
+    "DB_PASSWORD": "123456",
+    "DB_NAME": "test"
+  }
+}

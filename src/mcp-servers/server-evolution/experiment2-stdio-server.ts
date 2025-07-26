@@ -68,6 +68,6 @@ process.stdin.on("data", (buf) => {
       },
     };
 
-    onMessage(response);
+    onMessage(response); // better to put the above logic in the onMessage function
   }
 });

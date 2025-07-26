@@ -6,21 +6,6 @@ import {
 
 // ⚠️⚠️⚠️⚠️⚠️ 搭配 client-evolution/experiment2-raw-stdio-client.ts 使用 ⚠️⚠️⚠️⚠️⚠️
 
-process.stdin.on("data", (buf) => {
-  process.stdout.write(`❇️ Data received from client\n`);
-  const input = buf.toString();
-
-  const response: JSONRPCResponse = {
-    jsonrpc: "2.0",
-    id: 0,
-    result: {
-      message: `🌼 server received: ${input}`,
-    },
-  };
-
-  process.stdout.write(JSON.stringify(response) + "\n");
-});
-
 class ReadBuffer {
   #_buffer?: Buffer;
 
@@ -55,3 +40,34 @@ class ReadBuffer {
     this.#_buffer = undefined;
   }
 }
+
+const readBuffer = new ReadBuffer();
+
+function onMessage(message: JSONRPCMessage) {
+  process.stdout.write(JSON.stringify(message) + "\n");
+}
+
+process.stdin.on("data", (buf) => {
+  readBuffer.append(buf);
+
+  while (true) {
+    const message = readBuffer.readMessage();
+    if (!message) {
+      break;
+    }
+
+    if (!("id" in message)) {
+      continue;
+    }
+
+    const response: JSONRPCResponse = {
+      jsonrpc: "2.0",
+      id: message.id ?? 0,
+      result: {
+        message: `🌼 server received: ${JSON.stringify(message)}`,
+      },
+    };
+
+    onMessage(response);
+  }
+});

@@ -148,7 +148,9 @@ rl.on("line", async (line) => {
     tools,
   });
 
+  // ⚠️为什么不可以之间push response进history？
   // messageHistory.push(response); // Error: id is not permitted in the messages
+  // response.id 不符合 Anthropic 的 MessageParam 的 id 的格式
 
   const aiMessage: MessageParam = {
     role: response.role,

@@ -16,8 +16,25 @@ import {
   CallToolRequestSchema,
   Tool as ModelContextProtocolTool,
 } from "@modelcontextprotocol/sdk/types.js";
+import { z } from "zod";
 
 type TransportType = "stdio" | "httpStream";
+
+const url_schema = z
+  .string()
+  .url({
+    message: "httpStream needs a valid URL; did you provide a folder path?",
+  })
+  .describe("The server URL for the httpStream transport.");
+const filePath_schema = z.object({
+  command: z.string().describe("The command to run the MCP server."),
+  args: z.array(z.string()).describe("The arguments to run the MCP server."),
+});
+
+const argsSchema = {
+  httpStream: url_schema,
+  stdio: filePath_schema,
+} satisfies Record<TransportType, z.ZodType>;
 
 // 1. client
 class MCPClient<T extends TransportType = TransportType> {
@@ -39,16 +56,29 @@ class MCPClient<T extends TransportType = TransportType> {
   }
 
   async connectToServer(
-    ...args: T extends "httpStream" ? [serverUrl: string] : []
+    ...args: T extends "httpStream"
+      ? [serverUrl: string]
+      : [
+          {
+            command: string;
+            args: string[];
+          },
+        ]
   ) {
+    if (!args[0]) {
+      throw new Error(
+        `No arguments provided for the ${this.#transportType} transport`
+      );
+    }
+
+    const parsedArgs = argsSchema[this.#transportType].safeParse(args[0]);
+
+    if (!parsedArgs.success) {
+      throw new Error(parsedArgs.error.message);
+    }
+
     if (this.#transportType === "httpStream") {
-      const serverUrl = args[0];
-
-      if (!serverUrl) {
-        throw new Error("serverUrl is required for httpStream transport");
-      }
-
-      const url = new URL(serverUrl);
+      const url = new URL(parsedArgs.data as z.infer<typeof url_schema>);
 
       try {
         this.#transport = new StreamableHTTPClientTransport(url, {
@@ -61,7 +91,7 @@ class MCPClient<T extends TransportType = TransportType> {
         });
 
         await this.#client.connect(this.#transport, {
-          timeout: 10000000,
+          timeout: 1000,
         });
 
         console.log(
@@ -72,14 +102,19 @@ class MCPClient<T extends TransportType = TransportType> {
         throw error;
       }
     } else {
+      const { command, args } = parsedArgs.data as z.infer<
+        typeof filePath_schema
+      >;
+
       try {
         this.#transport = new StdioClientTransport({
-          command: "npx",
-          // fastmcp server example (index.ts)
-          args: ["tsx", "src/mcp-servers/low-level-file-system.ts"],
+          command,
+          args,
         });
 
         await this.#client.connect(this.#transport);
+
+        console.log(`Connected to server via stdio transport`);
       } catch (error) {
         console.log("Failed to connect to MCP server via stdio: ", error);
         throw error;
@@ -104,7 +139,10 @@ const { tools: modelContextProtocolToolsHttpStream } =
 
 const client2 = new MCPClient({ transportType: "stdio" });
 
-await client2.connectToServer();
+await client2.connectToServer({
+  command: "npx",
+  args: ["-y", "@upstash/context7-mcp"],
+});
 
 const { tools: modelContextProtocolToolsStdio } =
   await client2.client.listTools(); // returns { tools: [@modelcontextprotocol tool definitions] }

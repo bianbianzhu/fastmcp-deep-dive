@@ -8,78 +8,82 @@ import { Router } from "express";
 import { randomUUID } from "node:crypto";
 import { initServer } from "../server.js";
 
-const router: Router = Router();
+export function createMCPRouter(options: { authToken: string }): Router {
+  const { authToken } = options;
 
-const sessions = new Map<
-  string,
-  {
-    server: McpServer;
-    transport: StreamableHTTPServerTransport;
-  }
->();
+  const router: Router = Router();
 
-router.post("/", async (req, res) => {
-  const sid = req.headers["mcp-session-id"];
+  const sessions = new Map<
+    string,
+    {
+      server: McpServer;
+      transport: StreamableHTTPServerTransport;
+    }
+  >();
 
-  let transport: StreamableHTTPServerTransport;
-  let server: McpServer;
+  router.post("/", async (req, res) => {
+    const sid = req.headers["mcp-session-id"];
 
-  if (sid && typeof sid === "string") {
-    const session = sessions.get(sid);
+    let transport: StreamableHTTPServerTransport;
+    let server: McpServer;
 
-    const sessionNotFoundResponse: JSONRPCError = {
-      jsonrpc: "2.0",
-      id: req.body?.id ?? null,
-      error: {
-        code: -32000,
-        message: "❌ Bad Request: Session not found",
-      },
-    };
+    if (sid && typeof sid === "string") {
+      const session = sessions.get(sid);
 
-    if (!session) {
-      res.status(404).json(sessionNotFoundResponse);
+      const sessionNotFoundResponse: JSONRPCError = {
+        jsonrpc: "2.0",
+        id: req.body?.id ?? null,
+        error: {
+          code: -32000,
+          message: "❌ Bad Request: Session not found",
+        },
+      };
+
+      if (!session) {
+        res.status(404).json(sessionNotFoundResponse);
+        return;
+      }
+
+      server = session.server;
+      transport = session.transport;
+    } else if (!sid && isInitializeRequest(req.body)) {
+      transport = new StreamableHTTPServerTransport({
+        sessionIdGenerator: randomUUID,
+        onsessioninitialized: (sessionId) => {
+          sessions.set(sessionId, {
+            transport,
+            server,
+          });
+          console.log(`⭐️ New session initialized: ${sessionId}`);
+        },
+      });
+
+      transport.onclose = () => {
+        if (transport.sessionId) {
+          console.log(`❌ Closing session: ${transport.sessionId}`);
+          sessions.delete(transport.sessionId);
+        }
+      };
+
+      server = initServer({ authToken });
+
+      await server.connect(transport);
+    } else {
+      const badRequestResponse: JSONRPCError = {
+        jsonrpc: "2.0",
+        id: req.body?.id ?? null,
+        error: {
+          code: -32000,
+          message: "❌ Bad Request: Invalid request",
+        },
+      };
+
+      res.status(400).json(badRequestResponse);
       return;
     }
 
-    server = session.server;
-    transport = session.transport;
-  } else if (!sid && isInitializeRequest(req.body)) {
-    transport = new StreamableHTTPServerTransport({
-      sessionIdGenerator: randomUUID,
-      onsessioninitialized: (sessionId) => {
-        sessions.set(sessionId, {
-          transport,
-          server,
-        });
-        console.log(`⭐️ New session initialized: ${sessionId}`);
-      },
-    });
+    await transport.handleRequest(req, res, req.body);
+  });
 
-    transport.onclose = () => {
-      if (transport.sessionId) {
-        console.log(`❌ Closing session: ${transport.sessionId}`);
-        sessions.delete(transport.sessionId);
-      }
-    };
-
-    server = initServer();
-
-    await server.connect(transport);
-  } else {
-    const badRequestResponse: JSONRPCError = {
-      jsonrpc: "2.0",
-      id: req.body?.id ?? null,
-      error: {
-        code: -32000,
-        message: "❌ Bad Request: Invalid request",
-      },
-    };
-
-    res.status(400).json(badRequestResponse);
-    return;
-  }
-
-  await transport.handleRequest(req, res, req.body);
-});
-
-export default router;
+  return router;
+}

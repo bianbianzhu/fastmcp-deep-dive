@@ -12,7 +12,7 @@ export function createAuthMiddleware(authToken: string) {
       id: req.body?.id ?? null,
       error: {
         code: -32001,
-        message: "Unauthorized: Missing Bearer token",
+        message: "❌ Unauthorized: Missing Bearer token",
       },
     };
 
@@ -26,7 +26,7 @@ export function createAuthMiddleware(authToken: string) {
       id: req.body?.id ?? null,
       error: {
         code: -32002,
-        message: "Forbidden: Invalid Bearer token",
+        message: "❌ Forbidden: Invalid Bearer token",
       },
     };
 

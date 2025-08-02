@@ -5,7 +5,7 @@ export function createHealthCheckRouter(port: number): Router {
 
   router.get("/", (_req, res) => {
     res.status(200).json({
-      status: "ok",
+      status: "✅ ok",
       timeStamp: new Date().toISOString(),
       transport: "httpstream",
       port,

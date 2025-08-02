@@ -2,7 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import {
   GetBlockParamsSchema,
   GetPageParamsSchema,
-  PatchBlockBodyStrictSchema,
+  PatchBlockBodySchema,
   PatchBlockParamsSchema,
   PatchPageBodySchema,
   PatchPageParamsSchema,
@@ -222,7 +222,7 @@ export function registerTool(
     "Patch a block",
     {
       params: PatchBlockParamsSchema,
-      body: PatchBlockBodyStrictSchema,
+      body: PatchBlockBodySchema,
     },
     async ({ params, body }) => {
       const { block_id } = params;

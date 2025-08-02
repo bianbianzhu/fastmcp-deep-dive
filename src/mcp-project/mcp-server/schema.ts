@@ -117,14 +117,6 @@ const RichTextItemSchema = z
   })
   .strict();
 
-// Title property schema (which is an array of rich text items)
-const TitlePropertySchema = z
-  .object({
-    type: z.literal("title"),
-    title: z.array(RichTextItemSchema).max(100),
-  })
-  .strict();
-
 // Properties schema - this is more flexible since properties can vary
 // but includes the specific title property structure shown in the spec
 const PropertiesSchema = z
@@ -200,44 +192,6 @@ export const PatchBlockParamsSchema = z.object({
 export const PatchBlockBodySchema = z.object({
   type: z
     .record(z.any())
-    .optional()
-    .describe(
-      "The [block object `type`](ref:block#block-object-keys) value with the properties to be updated. Currently only `text` (for supported block types) and `checked` (for `to_do` blocks) fields can be updated."
-    ),
-  archived: z
-    .boolean()
-    .default(false)
-    .optional()
-    .describe(
-      "Set to true to archive (delete) a block. Set to false to un-archive (restore) a block."
-    ),
-});
-
-// More specific type schemas if you want to be more restrictive
-// These are alternative schemas you can use if you want stricter typing
-
-// Text block update schema
-export const TextBlockUpdateSchema = z.object({
-  text: z
-    .object({
-      content: z.string(),
-    })
-    .optional(),
-});
-
-// To-do block update schema
-export const TodoBlockUpdateSchema = z.object({
-  checked: z.boolean(),
-});
-
-// Specific PATCH body schema with known block types
-export const PatchBlockBodyStrictSchema = z.object({
-  type: z
-    .union([
-      TextBlockUpdateSchema,
-      TodoBlockUpdateSchema,
-      z.record(z.any()), // Fallback for other block types
-    ])
     .optional()
     .describe(
       "The [block object `type`](ref:block#block-object-keys) value with the properties to be updated. Currently only `text` (for supported block types) and `checked` (for `to_do` blocks) fields can be updated."

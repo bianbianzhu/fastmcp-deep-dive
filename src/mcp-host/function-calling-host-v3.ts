@@ -270,7 +270,7 @@ async function processToolCalls(response: Message): Promise<{
           : ""
       }:`,
       name,
-      input,
+      JSON.stringify(input, null, 2),
       "[y/n]"
     );
 

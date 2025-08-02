@@ -8,4 +8,8 @@ dist
 
 .langgraph_api
 
-mcp.json
+### 忽略所有以 mcp 开头，以 .json 结尾的文件
+mcp*.json
+
+# 若你有子目录里也可能出现这些文件，建议下面这行也保留（冗余也无害）
+**/mcp*.json

@@ -190,7 +190,9 @@ export const GetBlockParamsSchema = BlockIdParamSchema;
 export const DeleteBlockParamsSchema = BlockIdParamSchema;
 
 // PATCH /v1/blocks/{block_id}
-export const PatchBlockParamsSchema = BlockIdParamSchema;
+export const PatchBlockParamsSchema = z.object({
+  block_id: z.string().describe("Identifier for a Notion block"),
+});
 
 // For the PATCH request body, the 'type' field is described as a generic object
 // with properties to be updated. Since the OpenAPI spec shows an empty properties object,

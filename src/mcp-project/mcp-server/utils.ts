@@ -43,5 +43,5 @@ export function parseArgs() {
     }
   }
 
-  return { transport, port, authToken };
+  return { transportType: transport, port, authToken };
 }

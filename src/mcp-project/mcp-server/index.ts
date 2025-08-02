@@ -10,15 +10,16 @@ import { createRootRouter } from "./routes/index.js";
  */
 
 export async function startMCPServer() {
-  const { transport, port, authToken } = parseArgs();
+  const { transportType, port, authToken } = parseArgs();
 
-  if (transport === "stdio") {
-    const server = initServer();
+  if (transportType === "stdio") {
+    const server = initServer({ authToken });
     const transport = new StdioServerTransport();
     await server.connect(transport);
 
+    console.log(`${transportType} MCP Server initialized`);
     return server;
-  } else if (transport === "httpstream") {
+  } else if (transportType === "httpstream") {
     if (!authToken) {
       throw new Error(
         "Auth token is required. Obtain a token from https://www.notion.so/my-integrations and set it as an environment variable called NOTION_AUTH_TOKEN or pass it as an argument to the server."
@@ -28,20 +29,18 @@ export async function startMCPServer() {
     const app = express();
     app.use(express.json());
 
-    // Auth middleware
-
     // Root router
     const rootRouter = createRootRouter({ port, authToken });
     app.use("/", rootRouter);
 
     app.listen(port, () => {
-      console.log(`${transport} MCP Server is running on port ${port}`);
+      console.log(`${transportType} MCP Server is running on port ${port}`);
       console.log(`END POINT: http://localhost:${port}/mcp`);
       console.log(`HEALTH CHECK: http://localhost:${port}/health`);
       console.log(`Authentication: Bearer token required`);
     });
   } else {
-    throw new Error(`Invalid transport: ${transport}`);
+    throw new Error(`Invalid transport: ${transportType}`);
   }
 
   return {

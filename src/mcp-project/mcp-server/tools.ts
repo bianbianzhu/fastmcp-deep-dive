@@ -1,8 +1,8 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import {
+  FlexibleUpdateBlockBodySchema,
   GetBlockParamsSchema,
   GetPageParamsSchema,
-  PatchBlockBodySchema,
   PatchBlockParamsSchema,
   PatchPageBodySchema,
   PatchPageParamsSchema,
@@ -222,11 +222,11 @@ export function registerTool(
     "Patch a block",
     {
       params: PatchBlockParamsSchema,
-      body: PatchBlockBodySchema,
+      body: FlexibleUpdateBlockBodySchema,
     },
     async ({ params, body }) => {
       const { block_id } = params;
-      const { type, archived } = body;
+      const { args } = body;
 
       const endpoint = `/v1/blocks/${block_id}`;
 
@@ -240,8 +240,7 @@ export function registerTool(
           "content-type": "application/json",
         },
         body: JSON.stringify({
-          type,
-          archived,
+          ...args,
         }),
       });
 
@@ -261,3 +260,30 @@ export function registerTool(
     }
   );
 }
+
+// valid request body
+// {
+//   "heading_1": {
+//           "rich_text": [
+//               {
+//                   "type": "text",
+//                   "text": {
+//                       "content": "where are you",
+//                       "link": null
+//                   },
+//                   "annotations": {
+//                       "bold": false,
+//                       "italic": false,
+//                       "strikethrough": false,
+//                       "underline": false,
+//                       "code": false,
+//                       "color": "default"
+//                   },
+//                   "plain_text": "Where is mcp",
+//                   "href": null
+//               }
+//           ],
+//           "is_toggleable": false,
+//           "color": "default"
+//       }
+//   }

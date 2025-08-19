@@ -186,21 +186,72 @@ export const PatchBlockParamsSchema = z.object({
   block_id: z.string().describe("Identifier for a Notion block"),
 });
 
-// For the PATCH request body, the 'type' field is described as a generic object
-// with properties to be updated. Since the OpenAPI spec shows an empty properties object,
-// we'll create a flexible schema that can accept any object structure
-export const PatchBlockBodySchema = z.object({
-  type: z
-    .record(z.any())
-    .optional()
-    .describe(
-      "The [block object `type`](ref:block#block-object-keys) value with the properties to be updated. Currently only `text` (for supported block types) and `checked` (for `to_do` blocks) fields can be updated."
-    ),
-  archived: z
-    .boolean()
-    .default(false)
-    .optional()
-    .describe(
-      "Set to true to archive (delete) a block. Set to false to un-archive (restore) a block."
-    ),
-});
+// Color enum for block-level colors
+const BlockColorSchema = z.enum([
+  "default",
+  "gray",
+  "brown",
+  "orange",
+  "yellow",
+  "green",
+  "blue",
+  "purple",
+  "pink",
+  "red",
+  "gray_background",
+  "brown_background",
+  "orange_background",
+  "yellow_background",
+  "green_background",
+  "blue_background",
+  "purple_background",
+  "pink_background",
+  "red_background",
+]);
+
+// Annotations schema (optional properties for text formatting)
+const AnnotationsSchema = z
+  .object({
+    bold: z.boolean().optional(),
+    italic: z.boolean().optional(),
+    strikethrough: z.boolean().optional(),
+    underline: z.boolean().optional(),
+    code: z.boolean().optional(),
+    color: BlockColorSchema.optional(),
+  })
+  .optional();
+
+// Rich text item schema with optional annotations
+const RichTextItemSchemaExtended = z
+  .object({
+    type: z.literal("text"),
+    text: TextSchema,
+    annotations: AnnotationsSchema,
+    plain_text: z.string().optional(),
+    href: z.string().nullable().optional(),
+  })
+  .strict();
+
+// Base rich text block schema (for headings, paragraphs, etc.)
+const BaseRichTextBlockSchema = z
+  .object({
+    rich_text: z.array(RichTextItemSchemaExtended).max(100),
+    color: BlockColorSchema.optional(),
+    is_toggleable: z.boolean().optional(),
+  })
+  .strict();
+
+export const FlexibleUpdateBlockBodySchema = {
+  args: z
+    .record(
+      z
+        .string()
+        .describe(
+          "block type (heading_1, paragraph, etc.); MUST NOT CHANGE THE TYPE WHEN UPDATING A BLOCK. Keep the same type as the block you are updating. Updating type is not supported."
+        ),
+      BaseRichTextBlockSchema
+    )
+    .refine((data) => Object.keys(data).length === 1, {
+      message: "Must contain exactly one block type property",
+    }),
+};

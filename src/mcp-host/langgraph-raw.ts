@@ -43,7 +43,7 @@ const GraphAnnotation = Annotation.Root({
 });
 
 const model = new ChatAnthropic({
-  model: "claude-4-sonnet-20250514",
+  model: "claude-haiku-4-5",
 });
 
 const modelWithTools = model.bindTools(llmCompatibleTools);

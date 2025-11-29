@@ -26,7 +26,7 @@ const multiServerMCPClient = new MultiServerMCPClient({
 const llmCompatibleTools = await multiServerMCPClient.getTools();
 
 const model = new ChatAnthropic({
-  model: "claude-3-7-sonnet-latest",
+  model: "claude-haiku-4-5",
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
@@ -35,13 +35,13 @@ export const agent = createReactAgent({
   tools: llmCompatibleTools,
 });
 
-// const result = await agent.invoke({
-//   messages: [
-//     {
-//       role: "user",
-//       content: "what is the weather in sf",
-//     },
-//   ],
-// });
+const result = await agent.invoke({
+  messages: [
+    {
+      role: "user",
+      content: "what is the weather in sf",
+    },
+  ],
+});
 
-// console.log(result.messages[result.messages.length - 1].content);
+console.log(result.messages[result.messages.length - 1].content);

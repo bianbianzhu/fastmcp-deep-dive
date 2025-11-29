@@ -442,7 +442,7 @@ async function createMessage({
   tools?: AnthropicTool[];
 }) {
   const response = await anthropic.messages.create({
-    model: "claude-3-5-sonnet-20240620",
+    model: "claude-haiku-4-5",
     messages,
     max_tokens: 1000,
     temperature: 0.5,

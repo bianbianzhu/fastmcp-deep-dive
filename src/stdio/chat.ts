@@ -62,7 +62,7 @@ signals.forEach((signal) => {
 
 async function createMessage(messages: MessageParam[]) {
   const response = await anthropic.messages.create({
-    model: "claude-3-5-sonnet-latest",
+    model: "claude-haiku-4-5",
     max_tokens: 1000,
     temperature: 0.5,
     system: "You are a helpful assistant.",
